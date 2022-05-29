@@ -1,0 +1,154 @@
+<html>
+<head>
+    <meta http-equiv="Cache-control" content="no-cache">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body class="Gradient">
+<main>
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-sm">
+                <h1 class="text-center Header">Ваша активность</h1>
+                <div class="text-center Info">
+                    <span class="Stats">Оценок поставлено: </span> <span class="Stats" id="reactions">0</span><br>
+                </div>
+                <div class="text-center Info"><span class="Stats">Комментариев оставлено: </span> <span class="Stats"
+                                                                                                        id="comments">0</span><br>
+                </div>
+                <div class="text-center Info"><span class="Stats">До следующей награды:  </span> <span class="Stats"
+                                                                                                       id="next_gift">∞</span><br>
+                </div>
+                <div class="text-center Info"><span class="Stats">Ваш баланс:  </span> <span class="Stats" id="balance">0</span>
+                    <span class="Stats">$MSHRT</span><br>
+                </div>
+                <div class="text-center Info" id="addressContainer"><span class="Stats" id="address"></span></div>
+                <div class="text-center">
+                    <a class="btn PrimaryButton Logo" style="color: white; border-color: white" id="connectWallet"
+                       onclick="connectMetamask()">Подключить
+                        кошелек</a>
+                </div>
+            </div>
+            <div class="col-sm text-center">
+                <a href="/"><h3 class="Logo" style="margin: 15px">MetaShorts</h3></a>
+                <div>
+                    <video muted autoplay playsinline controls preload="auto" loop>
+                        <source src="{% static video %}">
+                    </video>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div>
+                    <h1 class="text-center Logo">Комментарии</h1>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div>
+                                <div class="text-center CommentBody">
+                                    <p class="Stats">{{ comment.contents }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h2 class="text-center Logo">Комментариев пока нет...</h2>
+                    {% endif %}
+                    <div class="text-center">
+                        <label for="comment" class="Stats">Напишите комментарий</label><br><input style="color: black"
+                                                                                                  id="comment">
+                        <a class="btn  PrimaryButton Logo" style="color: white; border-color: white"
+                           onclick="sendComment()">Отправить</a>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="btn PrimaryButton Logo" style="color: white; border-color: white" onclick="sendLike()"
+                       id="like">{{ likes }} Like</a>
+                    <a class="btn   PrimaryButton Logo" style="color: white; border-color: white"
+                       onclick="sendDislike()"
+                       id="dislike">{{ dislikes }} Dislike</a>
+                    <a class="btn PrimaryButton Logo" style="color: white; border-color: white" href="/watch/"
+                       id="next">Другое видео</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js">
+
+</script>
+<script>
+    if (localStorage.hasOwnProperty("address")) {
+        document.getElementById("address").innerText = `Ваш адрес ${localStorage.getItem("address")}`
+        document.getElementById("connectWallet").style.visibility = "hidden";
+    } else {
+        document.getElementById("addressContainer").style.visibility = "hidden";
+    }
+
+    async function connectMetamask() {
+        if (typeof window.ethereum !== 'undefined') {
+            const accounts = await ethereum.request({method: 'eth_requestAccounts'});
+            localStorage.setItem("address", accounts[0]);
+
+        } else {
+            alert("No Metamask is in browser!");
+        }
+
+    }
+
+    async function sendAction(action_type, action_data) {
+        if (localStorage.hasOwnProperty("address")) {
+            const address = localStorage.getItem("address");
+            const video = "{{ video_id }}"
+            axios.post("/api/user_action/", {
+                address, action_type, action_data, video
+            }).catch(e => {
+                alert(e)
+            })
+            axios.get(`/api/user_action/?address=${address}`).then(response => {
+                document.getElementById("reactions").innerText = response.data.reactions;
+                document.getElementById("comments").innerText = response.data.comments;
+                document.getElementById("next_gift").innerText = response.data.next_gift;
+                document.getElementById("balance").innerText = response.data.balance;
+            });
+            location.reload();
+        } else {
+            alert("No address is provided");
+        }
+    }
+
+    async function sendReaction(action_data) {
+        await sendAction("REACTION", action_data);
+    }
+
+    async function sendLike() {
+        await sendReaction("LIKE");
+        document.getElementById("like").style.backgroundColor = "blue";
+    }
+
+    async function sendDislike() {
+        await sendReaction("DISLIKE");
+        document.getElementById("dislike").style.backgroundColor = "blue";
+    }
+
+    async function sendComment() {
+        const comment = document.getElementById("comment").value;
+        await sendAction("COMMENT", comment);
+    }
+
+    if (localStorage.hasOwnProperty("address")) {
+        const address = localStorage.getItem("address");
+        axios.get(`/api/user_action/?address=${address}`).then(response => {
+            document.getElementById("reactions").innerText = response.data.reactions;
+            document.getElementById("comments").innerText = response.data.comments;
+            document.getElementById("next_gift").innerText = response.data.next_gift;
+            document.getElementById("balance").innerText = response.data.balance;
+
+        });
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+@font-face {
+    font-family: "Futura";
+    src: url("futura.ttf")
+}
+
+@font-face {
+    font-family: "Pepsi";
+    src: url("header.otf")
+}
+
+
+* {
+    color: white;
+}
+
+a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}
+
+a:hover {
+    color: azure;
+}
+
+span, p {
+    font-family: "Futura" sans-serif;
+}
+
+.MenuItem {
+    color: aliceblue;
+}
+
+.Header {
+    font-family: "Pepsi";
+}
+
+.PrimaryButton {
+    border-color: aliceblue;
+    color: white;
+}
+
+.Logo {
+    font-family: "Pepsi", sans-serif;
+    color: white;
+}
+
+.VideoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    resize: vertical;
+    overflow: auto;
+}
+
+.Video {
+    resize: vertical;
+    overflow: auto;
+}
+
+.TransparentContainer {
+    background: transparent;
+}
+
+Menu {
+    background-color: black;
+}
+
+.BlackBackground {
+    background-color: black;
+}
+
+.HeaderWhite {
+    color: white;
+}
+
+.Gradient {
+    background: rgb(12, 25, 95);
+    background: -moz-linear-gradient(90deg, rgba(12, 25, 95, 1) 0%, rgba(0, 0, 0, 1) 52%, rgba(81, 5, 83, 1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(12, 25, 95, 1) 0%, rgba(0, 0, 0, 1) 52%, rgba(81, 5, 83, 1) 100%);
+    background: linear-gradient(90deg, rgba(12, 25, 95, 1) 0%, rgba(0, 0, 0, 1) 52%, rgba(81, 5, 83, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0c195f", endColorstr="#510553", GradientType=1);
+}
+
+.Stats {
+    margin-top: 30px;
+    font-size: x-large;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.Info {
+    border-color: white;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 35px;
+    padding: 15px;
+    margin: 5px;
+}
+
+
+.CommentBody {
+    border-color: white;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+}
+
+
+.Rare {
+background: rgb(238,174,202);
+background: -moz-radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+background: -webkit-radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#eeaeca",endColorstr="#94bbe9",GradientType=1);
+}
+
+.Epic {
+
+    background: rgb(131,58,180);
+background: -moz-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+background: -webkit-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#fcb045",GradientType=1);
+}
+
+.Common {
+
+}
